@@ -1,3 +1,10 @@
+using NostalgicPlayer.DataAccess.Interfaces.Genres;
+using NostalgicPlayer.DataAccess.Repositories.Genres;
+using NostalgicPlayer.Service.Interfaces.Common;
+using NostalgicPlayer.Service.Interfaces.Genres;
+using NostalgicPlayer.Service.Services.Common;
+using NostalgicPlayer.Service.Services.Genres;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +13,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//->
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+//->
 
 var app = builder.Build();
 
@@ -17,9 +30,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

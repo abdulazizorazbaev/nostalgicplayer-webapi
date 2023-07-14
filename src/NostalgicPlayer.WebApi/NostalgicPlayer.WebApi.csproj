@@ -12,7 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="wwwroot\media\audios\" />
+    <Folder Include="wwwroot\media\avatars\" />
+    <Folder Include="wwwroot\media\documents\" />
+    <Folder Include="wwwroot\media\images\" />
+    <Folder Include="wwwroot\media\videos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NostalgicPlayer.DataAccess\NostalgicPlayer.DataAccess.csproj" />
+    <ProjectReference Include="..\NostalgicPlayer.Service\NostalgicPlayer.Service.csproj" />
   </ItemGroup>
 
 </Project>
