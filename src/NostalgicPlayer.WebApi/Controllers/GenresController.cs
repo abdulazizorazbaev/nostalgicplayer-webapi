@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.Service.DTOs.Genres;
 using NostalgicPlayer.Service.Interfaces.Genres;
+using NostalgicPlayer.Service.Validators.DTOs.Genres;
 
 namespace NostalgicPlayer.WebApi.Controllers;
 
@@ -32,11 +32,21 @@ public class GenresController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] GenreCreateDto dto)
-        => Ok(await _genreService.CreateAsync(dto));
+    {
+        var createValidator = new GenreCreateValidator();
+        var result = createValidator.Validate(dto);
+        if (result.IsValid) return Ok(await _genreService.CreateAsync(dto));
+        else return BadRequest(result.Errors);
+    }
 
     [HttpPut("{genreId}")]
     public async Task<IActionResult> UpdateAsync(long genreId, [FromForm] GenreUpdateDto dto)
-        => Ok(await _genreService.UpdateAsync(genreId, dto));
+    {
+        var updateValidator = new GenreUpdateValidator();
+        var result = updateValidator.Validate(dto);
+        if (result.IsValid) return Ok(await _genreService.UpdateAsync(genreId, dto));
+        else return BadRequest(result.Errors);
+    }
 
     [HttpDelete("{genreId}")]
     public async Task<IActionResult> DeleteAsync(long genreId)

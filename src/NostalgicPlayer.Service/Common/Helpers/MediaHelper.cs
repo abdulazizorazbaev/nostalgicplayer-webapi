@@ -9,4 +9,17 @@ public class MediaHelper
         string name = "IMG_" + Guid.NewGuid() + extensiom;
         return name;
     }
+
+    public static string[] GetImageExtensions()
+    {
+        return new string[]
+        {
+            ".jpg",
+            ".png",
+            ".jpeg",
+            ".svg",
+            ".bmp",
+            ".heic"
+        };
+    }
 }
