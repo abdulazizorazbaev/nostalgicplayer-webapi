@@ -23,7 +23,6 @@ public class SingerCreateValidator : AbstractValidator<SingerCreateDto>
             .MinimumLength(20).WithMessage("Biography must be more than 20 characters!");
 
         RuleFor(dto => dto.FacebookAcc)
-            .NotNull().NotEmpty().WithMessage("LastName field is required!")
             .MinimumLength(5).WithMessage("Account must be more than 5 characters!");
 
         RuleFor(dto => dto.InstagramAcc)

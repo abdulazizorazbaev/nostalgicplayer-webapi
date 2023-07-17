@@ -23,23 +23,20 @@ public class SingerUpdateValidator : AbstractValidator<SingerUpdateDto>
             .MinimumLength(20).WithMessage("Biography must be more than 20 characters!");
 
         RuleFor(dto => dto.FacebookAcc)
-            .NotNull().NotEmpty().WithMessage("Account field is required!")
-            .MinimumLength(10).WithMessage("Account must be more than 5 characters!");
+            .MinimumLength(5).WithMessage("Account must be more than 5 characters!");
 
         RuleFor(dto => dto.InstagramAcc)
-            .NotNull().NotEmpty().WithMessage("Account field is required!")
             .MinimumLength(5).WithMessage("Account must be more than 5 characters!")
             .MaximumLength(50).WithMessage("Account must be less than 50 characters!");
 
         RuleFor(dto => dto.YoutubeLink)
-            .NotNull().NotEmpty().WithMessage("Link field is required!")
             .MinimumLength(5).WithMessage("Link must be more than 20 characters!");
 
         When(dto => dto.ImagePath is not null, () =>
         {
             int maxImageSize = 3;
-            RuleFor(dto => dto.ImagePath.Length).LessThan(maxImageSize * 1024 * 1024).WithMessage("Image size is exceeded!");
-            RuleFor(dto => dto.ImagePath.FileName).Must(predicate =>
+            RuleFor(dto => dto.ImagePath!.Length).LessThan(maxImageSize * 1024 * 1024).WithMessage("Image size is exceeded!");
+            RuleFor(dto => dto.ImagePath!.FileName).Must(predicate =>
             {
                 FileInfo fileInfo = new FileInfo(predicate);
                 return MediaHelper.GetImageExtensions().Contains(fileInfo.Extension);
