@@ -6,7 +6,7 @@ public class GenreUpdateDto
 {
     public string GenreName { get; set; } = String.Empty;
 
-    public IFormFile ImagePath { get; set; } = default!;
+    public IFormFile? ImagePath { get; set; }
 
     public string Description { get; set; } = String.Empty;
 }

@@ -2,11 +2,11 @@
 
 public class Singer : Human
 {
-    public string Biography { get; set; } = String.Empty;
+    public string Bio { get; set; } = String.Empty;
 
-    public string FacebookAccount { get; set; } = String.Empty;
+    public string FacebookAcc { get; set; } = String.Empty;
 
-    public string InstagramAccount { get; set; } = String.Empty;
+    public string InstagramAcc { get; set; } = String.Empty;
 
     public string YoutubeLink { get; set; } = String.Empty;
 }

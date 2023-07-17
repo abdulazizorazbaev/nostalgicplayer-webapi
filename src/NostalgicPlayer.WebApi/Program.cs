@@ -1,9 +1,14 @@
 using NostalgicPlayer.DataAccess.Interfaces.Genres;
+using NostalgicPlayer.DataAccess.Interfaces.Singers;
 using NostalgicPlayer.DataAccess.Repositories.Genres;
+using NostalgicPlayer.DataAccess.Repositories.Singers;
+using NostalgicPlayer.Domain.Entities.Singers;
 using NostalgicPlayer.Service.Interfaces.Common;
 using NostalgicPlayer.Service.Interfaces.Genres;
+using NostalgicPlayer.Service.Interfaces.Singers;
 using NostalgicPlayer.Service.Services.Common;
 using NostalgicPlayer.Service.Services.Genres;
+using NostalgicPlayer.Service.Services.Singers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +21,12 @@ builder.Services.AddSwaggerGen();
 
 //->
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<ISingerRepository, SingerRepository>();
+
 builder.Services.AddScoped<IFileService, FileService>();
+
 builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<ISingerService, SingerService>();
 //->
 
 var app = builder.Build();
