@@ -17,9 +17,8 @@ public class MediaHelper
             ".jpg",
             ".png",
             ".jpeg",
-            ".svg",
             ".bmp",
-            ".heic"
+            ".svg"
         };
     }
 }
