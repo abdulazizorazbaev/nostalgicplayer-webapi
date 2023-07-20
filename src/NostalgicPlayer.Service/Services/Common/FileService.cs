@@ -11,6 +11,7 @@ public class FileService : IFileService
     private readonly string IMAGES = "images";
     //private readonly string AVATARS = "avatars";
     private readonly string ROOTPATH;
+    private readonly string AUDIOS = "audios";
 
     public FileService(IWebHostEnvironment env)
     {
@@ -52,5 +53,32 @@ public class FileService : IFileService
         stream.Close();
 
         return subpath;
+    }
+
+    public async Task<string> UploadMp3Async(IFormFile mp3)
+    {
+        string newMp3Name = MediaHelper.MakeMp3Name(mp3.FileName);
+        string subpath = Path.Combine(MEDIA, AUDIOS, newMp3Name);
+        string path = Path.Combine(ROOTPATH, subpath);
+
+        var stream = new FileStream(path, FileMode.Create);
+        await mp3.CopyToAsync(stream);
+        stream.Close();
+
+        return subpath;
+    }
+
+    public async Task<bool> DeleteMp3Async(string subpath)
+    {
+        string path = Path.Combine(ROOTPATH, subpath);
+        if (File.Exists(path))
+        {
+            await Task.Run(() =>
+            {
+                File.Delete(path);
+            });
+            return true;
+        }
+        else return false;
     }
 }

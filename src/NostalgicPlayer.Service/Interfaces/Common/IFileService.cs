@@ -13,4 +13,9 @@ public interface IFileService
     public Task<string> UploadAvatarAsync(IFormFile avatar);
 
     public Task<bool> DeleteAvatarAsync(string subpath);
+
+    // returns subpath of mp3
+    public Task<string> UploadMp3Async(IFormFile mp3);
+
+    public Task<bool> DeleteMp3Async(string subpath);
 }
