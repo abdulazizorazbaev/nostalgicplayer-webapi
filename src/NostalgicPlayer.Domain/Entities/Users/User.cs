@@ -10,8 +10,6 @@ public class User : Human
 
     public bool PhoneNumberConfirmed { get; set; }
 
-    public DateOnly BirthDate { get; set; }
-
     public bool IsMale { get; set; }
 
     public string PasswordHash { get; set; } = String.Empty;

@@ -4,7 +4,6 @@ create table users (
 	last_name varchar(50) not null,
 	phone_number varchar(13) not null,
 	phone_number_confirmed bool default false,
-	birth_date date,
 	is_male bool not null,
 	password_hash text not null,
 	salt text not null,
