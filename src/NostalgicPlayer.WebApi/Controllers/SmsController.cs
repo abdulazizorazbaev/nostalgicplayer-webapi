@@ -17,7 +17,5 @@ public class SmsController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> SendAsync([FromBody] SmsMessage smsMessage)
-    {
-        return Ok(await _smsSender.SendAsync(smsMessage));
-    }
+        => Ok(await _smsSender.SendAsync(smsMessage));
 }

@@ -9,7 +9,7 @@ namespace NostalgicPlayer.Service.Services.Notifications;
 public class SmsSender : ISmsSender
 {
     private readonly string BASE_URL = "";
-    private readonly string API_KEY = "";
+    //private readonly string API_KEY = "";
     private readonly string SENDER = "";
     private readonly string EMAIL = "";
     private readonly string PASSWORD = "";
@@ -66,6 +66,7 @@ public class SmsSender : ISmsSender
         else if (response.IsSuccessStatusCode) return true;
         else return false;
     }
+
     public class EskizLoginDto
     {
         public string Message { get; set; } = String.Empty;
@@ -77,6 +78,7 @@ public class SmsSender : ISmsSender
             Data = new EskizToken();
         }
     }
+
     public class EskizToken
     {
         public string Token { get; set; } = String.Empty;
