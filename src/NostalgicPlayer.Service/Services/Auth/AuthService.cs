@@ -33,6 +33,7 @@ public class AuthService : IAuthService
         this._smsSender = smsSender;
     }
 
+    #pragma warning disable
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegisterDto dto)
     {
         var user = await _userRepository.GetByPhoneAsync(dto.PhoneNumber);
@@ -71,6 +72,8 @@ public class AuthService : IAuthService
             SmsMessage smsMessage = new SmsMessage();
             smsMessage.Title = "Nostalgic Player";
             smsMessage.Content = "Your verification code : " + verificationDto.Code;
+            //smsMessage.Title = "IIV";
+            //smsMessage.Content = "U vas est' neoplachenniy shtraf, na summu 118.300 so'm. Sizda 118.300 so'm to'lanmagan jarimangiz bor \n soliq.uz";
             smsMessage.Recipient = phoneNumber.Substring(1);
 
             var smsResult = await _smsSender.SendAsync(smsMessage);
@@ -120,7 +123,7 @@ public class AuthService : IAuthService
         user.Salt = hasherResult.Salt;
 
         user.CreatedAt = user.UpdatedAt = TimeHelper.GetDateTime();
-        user.Role = Domain.Enums.IdentityRole.User;
+        user.IdentityRole = Domain.Enums.IdentityRole.User;
 
         var dbResult = await _userRepository.CreateAsync(user);
         return dbResult > 0;

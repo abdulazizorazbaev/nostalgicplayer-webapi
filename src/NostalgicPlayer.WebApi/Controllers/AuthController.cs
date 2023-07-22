@@ -48,6 +48,7 @@ public class AuthController : ControllerBase
         return Ok(new { serviceResult.Result, serviceResult.Token });
     }
 
+    #pragma warning disable
     [HttpGet]
     public async Task<IActionResult> Get()
     {
