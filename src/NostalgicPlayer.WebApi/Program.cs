@@ -44,6 +44,7 @@ builder.Services.AddScoped<ISingerService, SingerService>();
 builder.Services.AddScoped<IMusicService, MusicService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
 //->
