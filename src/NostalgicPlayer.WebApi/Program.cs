@@ -48,6 +48,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IPaginator, Paginator>();
 
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
 builder.ConfigureJwtAuth();

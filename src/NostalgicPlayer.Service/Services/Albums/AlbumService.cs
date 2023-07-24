@@ -14,12 +14,15 @@ public class AlbumService : IAlbumService
 {
     private readonly IAlbumRepository _albumRepository;
     private readonly IFileService _fileService;
+    private readonly IPaginator _paginator;
 
     public AlbumService(IAlbumRepository albumRepository,
-        IFileService fileService)
+        IFileService fileService,
+        IPaginator paginator)
     {
         this._albumRepository = albumRepository;
         this._fileService = fileService;
+        this._paginator = paginator;
     }
 
     public async Task<long> CountAsync() => await _albumRepository.CountAsync();
@@ -57,6 +60,8 @@ public class AlbumService : IAlbumService
     public async Task<IList<Album>> GetAllAsync(PaginationParams @params)
     {
         var albums = await _albumRepository.GetAllAsync(@params);
+        long count = await _albumRepository.CountAsync();
+        _paginator.Paginate(count, @params);
         return albums;
     }
 

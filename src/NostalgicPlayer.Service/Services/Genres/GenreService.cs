@@ -14,12 +14,15 @@ public class GenreService : IGenreService
 {
     private readonly IGenreRepository _genreRepository;
     private readonly IFileService _fileService;
+    private readonly IPaginator _paginator;
 
     public GenreService(IGenreRepository genreRepository,
-        IFileService fileService)
+        IFileService fileService,
+        IPaginator paginator)
     {
         this._genreRepository = genreRepository;
         this._fileService = fileService;
+        this._paginator = paginator;
     }
 
     public async Task<long> CountAsync() => await _genreRepository.CountAsync();
@@ -54,6 +57,8 @@ public class GenreService : IGenreService
     public async Task<IList<Genre>> GetAllAsync(PaginationParams @params)
     {
         var genres = await _genreRepository.GetAllAsync(@params);
+        var count = await _genreRepository.CountAsync();
+        _paginator.Paginate(count, @params);
         return genres;
     }
 

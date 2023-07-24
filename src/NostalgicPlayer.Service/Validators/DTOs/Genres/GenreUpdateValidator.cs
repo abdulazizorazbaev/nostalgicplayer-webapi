@@ -20,7 +20,7 @@ public class GenreUpdateValidator : AbstractValidator<GenreUpdateDto>
         When(dto => dto.ImagePath is not null, () =>
         {
             int maxImageSize = 3;
-            RuleFor(dto => dto.ImagePath!.Length).LessThan(maxImageSize * 1024 * 1024).WithMessage("Image size is exceeded!");
+            RuleFor(dto => dto.ImagePath!.Length).LessThan(maxImageSize * 1024 * 1024 + 1).WithMessage("Image size is exceeded!");
             RuleFor(dto => dto.ImagePath!.FileName).Must(predicate =>
             {
                 FileInfo fileInfo = new FileInfo(predicate);
