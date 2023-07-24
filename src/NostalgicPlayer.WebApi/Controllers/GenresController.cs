@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.Service.DTOs.Genres;
 using NostalgicPlayer.Service.Interfaces.Genres;
@@ -19,18 +20,22 @@ public class GenresController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _genreService.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("count")]
+    [AllowAnonymous]
     public async Task<IActionResult> CountAsync()
         => Ok(await _genreService.CountAsync());
 
     [HttpGet("genreId")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long genreId)
         => Ok(await _genreService.GetByIdAsync(genreId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] GenreCreateDto dto)
     {
         var createValidator = new GenreCreateValidator();
@@ -40,6 +45,7 @@ public class GenresController : ControllerBase
     }
 
     [HttpPut("{genreId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long genreId, [FromForm] GenreUpdateDto dto)
     {
         var updateValidator = new GenreUpdateValidator();
@@ -49,6 +55,7 @@ public class GenresController : ControllerBase
     }
 
     [HttpDelete("{genreId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long genreId)
         => Ok(await _genreService.DeleteAsync(genreId));
 }

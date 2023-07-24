@@ -22,6 +22,7 @@ using NostalgicPlayer.Service.Services.Genres;
 using NostalgicPlayer.Service.Services.Musics;
 using NostalgicPlayer.Service.Services.Notifications;
 using NostalgicPlayer.Service.Services.Singers;
+using NostalgicPlayer.WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddScoped<ISingerRepository, SingerRepository>();
 builder.Services.AddScoped<IMusicRepository, MusicRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
@@ -45,8 +47,10 @@ builder.Services.AddScoped<IMusicService, MusicService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
+builder.ConfigureJwtAuth();
 //->
 
 var app = builder.Build();
@@ -59,6 +63,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
