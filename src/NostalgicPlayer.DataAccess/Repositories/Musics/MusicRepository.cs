@@ -52,7 +52,7 @@ public class MusicRepository : BaseRepository, IMusicRepository
         {
             await _connection.OpenAsync();
             string query = "DELETE FROM musics WHERE id = @Id";
-            var result = await _connection.ExecuteAsync(query, new {Id = id});
+            var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
         catch
@@ -91,7 +91,7 @@ public class MusicRepository : BaseRepository, IMusicRepository
         {
             await _connection.OpenAsync();
             string query = "SELECT *  FROM musics WHERE id = @Id";
-            var result = await _connection.QuerySingleAsync<Music>(query, new {Id = id});
+            var result = await _connection.QuerySingleAsync<Music>(query, new { Id = id });
             return result;
         }
         catch

@@ -25,7 +25,7 @@ public class AuthService : IAuthService
     private const string VERIFY_REGISTER_CACHE_KEY = "verify_register_";
     private const int VERIFICATION_MAXIMUM_ATTEMPTS = 3;
 
-    public AuthService(IMemoryCache memoryCache, 
+    public AuthService(IMemoryCache memoryCache,
         IUserRepository userRepository,
         ISmsSender smsSender,
         ITokenService tokenService)
@@ -36,7 +36,7 @@ public class AuthService : IAuthService
         this._tokenService = tokenService;
     }
 
-    #pragma warning disable
+#pragma warning disable
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegisterDto dto)
     {
         var user = await _userRepository.GetByPhoneAsync(dto.PhoneNumber);
@@ -48,10 +48,10 @@ public class AuthService : IAuthService
             cachedRegisterDto.FirstName = cachedRegisterDto.FirstName;
             _memoryCache.Remove(dto.PhoneNumber);
         }
-        else _memoryCache.Set(REGISTER_CACHE_KEY + dto.PhoneNumber, dto, 
+        else _memoryCache.Set(REGISTER_CACHE_KEY + dto.PhoneNumber, dto,
             TimeSpan.FromMinutes(CACHED_MINUTES_FOR_REGISTER));
 
-        return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER); 
+        return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
     }
 
     public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeRegisterAsync(string phoneNumber)

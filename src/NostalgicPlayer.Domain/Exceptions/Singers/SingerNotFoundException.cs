@@ -2,8 +2,8 @@
 
 public class SingerNotFoundException : NotFoundException
 {
-	public SingerNotFoundException()
-	{
-		this.TitleMessage = "Singer not found!";
-	}
+    public SingerNotFoundException()
+    {
+        this.TitleMessage = "Singer not found!";
+    }
 }

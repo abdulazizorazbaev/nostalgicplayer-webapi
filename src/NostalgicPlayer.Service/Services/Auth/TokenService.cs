@@ -12,7 +12,7 @@ namespace NostalgicPlayer.Service.Services.Auth;
 public class TokenService : ITokenService
 {
     private readonly IConfiguration _configuration;
-    
+
     public TokenService(IConfiguration _config)
     {
         _configuration = _config.GetSection("Jwt");
@@ -37,7 +37,7 @@ public class TokenService : ITokenService
             audience: _configuration["Audience"],
             claims: identityClaims,
             expires: TimeHelper.GetDateTime().AddHours(expiresHours),
-            signingCredentials: creds );
+            signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }

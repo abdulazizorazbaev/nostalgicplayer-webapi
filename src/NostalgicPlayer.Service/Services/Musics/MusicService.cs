@@ -1,6 +1,5 @@
 ﻿using NostalgicPlayer.DataAccess.Interfaces.Musics;
 using NostalgicPlayer.DataAccess.Utilities;
-using NostalgicPlayer.Domain.Entities.Genres;
 using NostalgicPlayer.Domain.Entities.Musics;
 using NostalgicPlayer.Domain.Exceptions.Files;
 using NostalgicPlayer.Domain.Exceptions.Musics;
@@ -80,7 +79,7 @@ public class MusicService : IMusicService
         music.Duration = dto.Duration;
         music.Description = dto.Description;
 
-        if(dto.ImagePath is not null)
+        if (dto.ImagePath is not null)
         {
             var deleteResult = await _fileService.DeleteImageAsync(music.ImagePath);
             if (deleteResult is false) throw new ImageNotFoundException();
@@ -90,7 +89,7 @@ public class MusicService : IMusicService
             music.ImagePath = newImagePath;
         }
 
-        if(dto.Mp3Path is not null)
+        if (dto.Mp3Path is not null)
         {
             var deleteResult = await _fileService.DeleteMp3Async(music.Mp3Path);
             if (deleteResult is false) throw new Mp3NotFoundException();

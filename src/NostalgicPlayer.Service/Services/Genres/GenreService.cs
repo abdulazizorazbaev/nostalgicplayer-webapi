@@ -72,11 +72,11 @@ public class GenreService : IGenreService
         genre.GenreName = dto.GenreName;
         genre.Description = dto.Description;
 
-        if(dto.ImagePath is not null)
+        if (dto.ImagePath is not null)
         {
             // deletes an old image
             var deleteResult = await _fileService.DeleteImageAsync(genre.ImagePath);
-            if(deleteResult is false) throw new ImageNotFoundException();
+            if (deleteResult is false) throw new ImageNotFoundException();
 
             // uploads a new image
             string newImagePath = await _fileService.UploadImageAsync(dto.ImagePath);

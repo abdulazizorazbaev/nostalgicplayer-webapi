@@ -1,9 +1,6 @@
 ﻿using NostalgicPlayer.DataAccess.Interfaces.Musics;
 using NostalgicPlayer.DataAccess.Utilities;
-using NostalgicPlayer.Domain.Entities.Albums;
 using NostalgicPlayer.Domain.Entities.Musics.Favorites;
-using NostalgicPlayer.Domain.Exceptions.Albums;
-using NostalgicPlayer.Domain.Exceptions.Files;
 using NostalgicPlayer.Domain.Exceptions.Musics;
 using NostalgicPlayer.Service.Common.Helpers;
 using NostalgicPlayer.Service.DTOs.Musics;

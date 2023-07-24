@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.Service.DTOs.Musics;
 using NostalgicPlayer.Service.Interfaces.Musics;
@@ -19,18 +20,22 @@ public class MusicsController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _musicService.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("count")]
+    [AllowAnonymous]
     public async Task<IActionResult> CountAsync()
         => Ok(await _musicService.CountAsync());
 
     [HttpGet("{musicId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long musicId)
         => Ok(await _musicService.GetByIdAsync(musicId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] MusicCreateDto dto)
     {
         var createValidator = new MusicCreateValidator();
@@ -40,6 +45,7 @@ public class MusicsController : ControllerBase
     }
 
     [HttpPut("{musicId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long musicId, [FromForm] MusicUpdateDto dto)
     {
         var updateValidator = new MusicUpdateValidator();
@@ -49,6 +55,7 @@ public class MusicsController : ControllerBase
     }
 
     [HttpDelete("{musicId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long musicId)
         => Ok(await _musicService.DeleteAsync(musicId));
 }

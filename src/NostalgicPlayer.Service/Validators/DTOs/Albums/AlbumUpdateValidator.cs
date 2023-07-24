@@ -6,8 +6,8 @@ namespace NostalgicPlayer.Service.Validators.DTOs.Albums;
 
 public class AlbumUpdateValidator : AbstractValidator<AlbumUpdateDto>
 {
-	public AlbumUpdateValidator()
-	{
+    public AlbumUpdateValidator()
+    {
         RuleFor(dto => dto.MusicId).NotNull().NotEmpty().WithMessage("MusicId field is required!");
         RuleFor(dto => dto.SingerId).NotNull().NotEmpty().WithMessage("SingerId field is required!");
         RuleFor(dto => dto.AlbumName)

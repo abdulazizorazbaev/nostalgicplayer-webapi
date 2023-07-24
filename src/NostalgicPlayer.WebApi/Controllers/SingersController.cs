@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.Service.DTOs.Singers;
 using NostalgicPlayer.Service.Interfaces.Singers;
@@ -19,18 +20,22 @@ public class SingersController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("count")]
+    [AllowAnonymous]
     public async Task<IActionResult> CountAsync()
         => Ok(await _service.CountAsync());
 
     [HttpGet("{singerId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long singerId)
         => Ok(await _service.GetByIdAsync(singerId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] SingerCreateDto dto)
     {
         var createValidator = new SingerCreateValidator();
@@ -40,6 +45,7 @@ public class SingersController : ControllerBase
     }
 
     [HttpPut("{singerId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long singerId, [FromForm] SingerUpdateDto dto)
     {
         var updateValidator = new SingerUpdateValidator();
@@ -49,6 +55,7 @@ public class SingersController : ControllerBase
     }
 
     [HttpDelete("{singerId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long singerId)
         => Ok(await _service.DeleteAsync(singerId));
 }

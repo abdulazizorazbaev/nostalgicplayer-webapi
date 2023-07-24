@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NostalgicPlayer.Domain.Enums;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NostalgicPlayer.Service.DTOs.Auth;
 using NostalgicPlayer.Service.Interfaces.Auth;
 using NostalgicPlayer.Service.Validators;
@@ -19,6 +19,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto registerDto)
     {
         var validator = new RegisterValidator();
@@ -32,16 +33,18 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register/send-code")]
+    [AllowAnonymous]
     public async Task<IActionResult> SendCodeRegisterAsync(string phone)
     {
         var result = PhoneNumberValidator.IsValid(phone);
         if (result == false) return BadRequest("Phone number is invalid!");
-        
+
         var serviceResult = await _authService.SendCodeRegisterAsync(phone);
         return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });
     }
 
     [HttpPost("register/verify")]
+    [AllowAnonymous]
     public async Task<IActionResult> VerifyRegisterAsync([FromBody] VerifyRegisterDto verifyRegisterDto)
     {
         var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.PhoneNumber, verifyRegisterDto.Code);
@@ -49,6 +52,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> LoginAsync([FromBody] LoginDto loginDto)
     {
         var validator = new LoginValidator();
@@ -56,6 +60,6 @@ public class AuthController : ControllerBase
         if (varResult.IsValid is false) return BadRequest(varResult.Errors);
 
         var serviceResult = await _authService.LoginAsync(loginDto);
-        return Ok(new { serviceResult.Result, serviceResult.Token }); 
+        return Ok(new { serviceResult.Result, serviceResult.Token });
     }
 }

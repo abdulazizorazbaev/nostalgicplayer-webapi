@@ -9,5 +9,5 @@ public class Genre : Auditable
 
     public string ImagePath { get; set; } = String.Empty;
 
-    public string Description { get; set;} = String.Empty;
+    public string Description { get; set; } = String.Empty;
 }

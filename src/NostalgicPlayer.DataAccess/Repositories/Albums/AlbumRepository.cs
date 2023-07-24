@@ -2,7 +2,6 @@
 using NostalgicPlayer.DataAccess.Interfaces.Albums;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.Domain.Entities.Albums;
-using NostalgicPlayer.Domain.Entities.Genres;
 
 namespace NostalgicPlayer.DataAccess.Repositories.Albums;
 
@@ -53,7 +52,7 @@ public class AlbumRepository : BaseRepository, IAlbumRepository
         {
             await _connection.OpenAsync();
             string query = "DELETE FROM albums WHERE id = @Id";
-            var result = await _connection.ExecuteAsync(query, new {Id = id});
+            var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
         catch

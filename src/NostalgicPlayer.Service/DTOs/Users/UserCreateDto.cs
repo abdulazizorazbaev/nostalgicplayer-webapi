@@ -1,5 +1,4 @@
 ﻿using NostalgicPlayer.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace NostalgicPlayer.Service.DTOs.Users;
 

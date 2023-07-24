@@ -17,7 +17,7 @@ public class GenreCreateValidatorTest
     public void ShouldReturnIncorrectImageFileSize(double imageSizeInMB)
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("Each departing client is serenaded with a close-harmony farewell.");
-        long imageSizeInByte = (long) (imageSizeInMB * 1024 * 1024);
+        long imageSizeInByte = (long)(imageSizeInMB * 1024 * 1024);
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, imageSizeInByte, "data", "file.png");
         GenreCreateDto genreCreateDto = new GenreCreateDto()
         {

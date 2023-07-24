@@ -53,7 +53,7 @@ public class GenreRepository : BaseRepository, IGenreRepository
         {
             await _connection.OpenAsync();
             string query = $"DELETE FROM genres WHERE id = @Id";
-            var result = await _connection.ExecuteAsync(query, new {Id = id});
+            var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
         catch
@@ -92,16 +92,16 @@ public class GenreRepository : BaseRepository, IGenreRepository
         {
             await _connection.OpenAsync();
             string query = $"SELECT * FROM genres WHERE id = @Id";
-            var result = await _connection.QuerySingleAsync<Genre>(query, new {Id = id});
+            var result = await _connection.QuerySingleAsync<Genre>(query, new { Id = id });
             return result;
         }
         catch
         {
             return null;
         }
-        finally 
-        { 
-            await _connection.CloseAsync(); 
+        finally
+        {
+            await _connection.CloseAsync();
         }
     }
 

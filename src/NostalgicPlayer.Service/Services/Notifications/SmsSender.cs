@@ -58,7 +58,7 @@ public class SmsSender : ISmsSender
         request.Content = content;
         var response = await client.SendAsync(request);
 
-        if(response.StatusCode == HttpStatusCode.Unauthorized)
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
             await LoginAsync();
             return await SendAsync(smsMessage);

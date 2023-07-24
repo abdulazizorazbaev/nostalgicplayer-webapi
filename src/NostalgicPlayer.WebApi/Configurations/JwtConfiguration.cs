@@ -24,4 +24,4 @@ public static class JwtConfiguration
                 };
             });
     }
-} 
+}

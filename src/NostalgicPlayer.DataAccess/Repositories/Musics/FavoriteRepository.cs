@@ -2,7 +2,6 @@
 using NostalgicPlayer.DataAccess.Interfaces.Musics;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.DataAccess.ViewModels;
-using NostalgicPlayer.Domain.Entities.Musics;
 using NostalgicPlayer.Domain.Entities.Musics.Favorites;
 
 namespace NostalgicPlayer.DataAccess.Repositories.Musics;

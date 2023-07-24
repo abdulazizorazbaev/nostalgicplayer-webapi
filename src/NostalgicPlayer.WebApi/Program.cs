@@ -51,6 +51,7 @@ builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
 builder.ConfigureJwtAuth();
+builder.ConfigureSwaggerAuth();
 //->
 
 var app = builder.Build();

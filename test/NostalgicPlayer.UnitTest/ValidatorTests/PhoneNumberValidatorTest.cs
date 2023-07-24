@@ -13,10 +13,10 @@ public class PhoneNumberValidatorTest
     [InlineData("+998903644016")]
     [InlineData("+998973644016")]
     [InlineData("+998993644016")]
-    public void ShouldReturnCorrect( string phoneNumber)
+    public void ShouldReturnCorrect(string phoneNumber)
     {
         var result = PhoneNumberValidator.IsValid(phoneNumber);
-        Assert.True(result); 
+        Assert.True(result);
     }
 
     [Theory]

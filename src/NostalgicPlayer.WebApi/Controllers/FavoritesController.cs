@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NostalgicPlayer.Service.DTOs.Albums;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NostalgicPlayer.Service.DTOs.Musics;
 using NostalgicPlayer.Service.Interfaces.Musics;
-using NostalgicPlayer.Service.Validators.DTOs.Albums;
 using NostalgicPlayer.Service.Validators.DTOs.Musics;
 
 namespace NostalgicPlayer.WebApi.Controllers;
@@ -20,14 +19,17 @@ public class FavoritesController : ControllerBase
     }
 
     [HttpGet("count")]
+    [AllowAnonymous]
     public async Task<IActionResult> CountAsync()
         => Ok(await _favoriteService.CountAsync());
 
     [HttpGet("{favoriteId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long favoriteId)
         => Ok(await _favoriteService.GetByIdAsync(favoriteId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] FavoriteCreateDto dto)
     {
         var createValidator = new FavoriteCreateValidator();
@@ -37,6 +39,7 @@ public class FavoritesController : ControllerBase
     }
 
     [HttpDelete("{favoriteId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long favoriteId)
         => Ok(await _favoriteService.DeleteAsync(favoriteId));
 }
