@@ -61,4 +61,12 @@ public class FavoriteService : IFavoriteService
         if (favorite is null) throw new FavoriteNotFoundException();
         else return favorite;
     }
+
+    public async Task<IList<FavoriteViewModel>> SearchAsync(string search, PaginationParams @params)
+    {
+        var favorites = await _favoriteRepository.SearchAsync(search, @params);
+        var count = await _favoriteRepository.CountAsync();
+        _paginator.Paginate(count, @params);
+        return favorites.Item2.ToList();
+    }
 }

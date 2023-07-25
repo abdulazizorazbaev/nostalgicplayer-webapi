@@ -34,6 +34,11 @@ public class FavoritesController : ControllerBase
     public async Task<IActionResult> GetByIdAsync(long favoriteId)
         => Ok(await _favoriteService.GetByIdAsync(favoriteId));
 
+    [HttpGet("search")]
+    [AllowAnonymous]
+    public async Task<IActionResult> SearchAsync(string search, [FromQuery] int page = 1)
+        => Ok(await _favoriteService.SearchAsync(search, new PaginationParams(page, maxPageSize)));
+
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] FavoriteCreateDto dto)

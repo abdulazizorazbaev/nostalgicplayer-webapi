@@ -71,7 +71,7 @@ public class FavoriteRepository : BaseRepository, IFavoriteRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM favorites ORDER BY id DESC " +
+            string query = $"SELECT * FROM myfavoritemusic_view ORDER BY id DESC " +
                 $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize}";
             var result = (await _connection.QueryAsync<FavoriteViewModel>(query)).ToList();
             return result;
@@ -105,9 +105,24 @@ public class FavoriteRepository : BaseRepository, IFavoriteRepository
         }
     }
 
-    public Task<(int ItemsCount, IList<FavoriteViewModel>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<(int ItemsCount, IList<FavoriteViewModel>)> SearchAsync(string search, PaginationParams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM myfavoritemusic_view WHERE music_name ILIKE @search ORDER BY id DESC " +
+                $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize}";
+            var result = (await _connection.QueryAsync<FavoriteViewModel>(query, new { search = "%" + search + "%" })).ToList();
+            return (result.Count, result);
+        }
+        catch
+        {
+            return (0, new List<FavoriteViewModel>());
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public Task<int> UpdateAsync(long id, Favorite entity)

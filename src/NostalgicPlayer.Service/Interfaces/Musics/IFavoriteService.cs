@@ -16,4 +16,6 @@ public interface IFavoriteService
     public Task<bool> DeleteAsync(long favoriteId);
 
     public Task<Favorite> GetByIdAsync(long favoriteId);
+
+    public Task<IList<FavoriteViewModel>> SearchAsync(string search, PaginationParams @params);
 }
