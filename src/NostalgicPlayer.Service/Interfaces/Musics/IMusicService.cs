@@ -1,4 +1,5 @@
 ﻿using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Musics;
 using NostalgicPlayer.Service.DTOs.Musics;
 
@@ -8,7 +9,7 @@ public interface IMusicService
 {
     public Task<bool> CreateAsync(MusicCreateDto dto);
 
-    public Task<IList<Music>> GetAllAsync(PaginationParams @params);
+    public Task<IList<MusicViewModel>> GetAllAsync(PaginationParams @params);
 
     public Task<long> CountAsync();
 
@@ -17,4 +18,6 @@ public interface IMusicService
     public Task<Music> GetByIdAsync(long musicId);
 
     public Task<bool> UpdateAsync(long musicId, MusicUpdateDto dto);
+
+    public Task<IList<MusicViewModel>> SearchAsync(string search, PaginationParams @params);
 }

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using NostalgicPlayer.DataAccess.Interfaces.Musics;
 using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Musics;
 
 namespace NostalgicPlayer.DataAccess.Repositories.Musics;
@@ -65,19 +66,19 @@ public class MusicRepository : BaseRepository, IMusicRepository
         }
     }
 
-    public async Task<IList<Music>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<MusicViewModel>> GetAllAsync(PaginationParams @params)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM musics ORDER BY id DESC " +
+            string query = $"SELECT * FROM musics_view ORDER BY id DESC " +
                 $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize}";
-            var result = (await _connection.QueryAsync<Music>(query)).ToList();
+            var result = (await _connection.QueryAsync<MusicViewModel>(query)).ToList();
             return result;
         }
         catch
         {
-            return new List<Music>();
+            return new List<MusicViewModel>();
         }
         finally
         {
@@ -104,9 +105,24 @@ public class MusicRepository : BaseRepository, IMusicRepository
         }
     }
 
-    public Task<(int ItemsCount, IList<Music>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<(int ItemsCount, IList<MusicViewModel>)> SearchAsync(string search, PaginationParams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM musics_view WHERE music_name ILIKE @search ORDER BY id DESC " +
+                $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize}";
+            var result = (await _connection.QueryAsync<MusicViewModel>(query, new { search = "%" + search + "%" })).ToList();
+            return (result.Count, result);
+        }
+        catch
+        {
+            return (0, new List<MusicViewModel>());
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> UpdateAsync(long id, Music entity)

@@ -1,5 +1,6 @@
 ﻿using NostalgicPlayer.DataAccess.Interfaces.Musics;
 using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Musics;
 using NostalgicPlayer.Domain.Exceptions.Files;
 using NostalgicPlayer.Domain.Exceptions.Musics;
@@ -57,7 +58,7 @@ public class MusicService : IMusicService
         return dbResult > 0;
     }
 
-    public async Task<IList<Music>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<MusicViewModel>> GetAllAsync(PaginationParams @params)
     {
         var musics = await _musicRepository.GetAllAsync(@params);
         var count = await _musicRepository.CountAsync();
@@ -70,6 +71,14 @@ public class MusicService : IMusicService
         var music = await _musicRepository.GetByIdAsync(musicId);
         if (music is null) throw new MusicNotFoundException();
         else return music;
+    }
+
+    public async Task<IList<MusicViewModel>> SearchAsync(string search, PaginationParams @params)
+    {
+        var musics = await _musicRepository.SearchAsync(search, @params);
+        var count = await _musicRepository.CountAsync();
+        _paginator.Paginate(count, @params);
+        return musics.Item2.ToList();
     }
 
     public async Task<bool> UpdateAsync(long musicId, MusicUpdateDto dto)

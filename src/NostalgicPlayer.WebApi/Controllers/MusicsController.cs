@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.Service.DTOs.Musics;
 using NostalgicPlayer.Service.Interfaces.Musics;
+using NostalgicPlayer.Service.Services.Musics;
 using NostalgicPlayer.Service.Validators.DTOs.Musics;
 
 namespace NostalgicPlayer.WebApi.Controllers;
@@ -33,6 +34,11 @@ public class MusicsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long musicId)
         => Ok(await _musicService.GetByIdAsync(musicId));
+
+    [HttpGet("search")]
+    [AllowAnonymous]
+    public async Task<IActionResult> SearchAsync(string search, [FromQuery] int page = 1)
+        => Ok(await _musicService.SearchAsync(search, new PaginationParams(page, maxPageSize)));
 
     [HttpPost]
     [Authorize(Roles = "Admin")]

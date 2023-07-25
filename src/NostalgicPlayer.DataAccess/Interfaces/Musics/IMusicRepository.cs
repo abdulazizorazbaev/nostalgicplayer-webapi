@@ -1,9 +1,10 @@
 ﻿using NostalgicPlayer.DataAccess.Common.Interfaces;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Musics;
 
 namespace NostalgicPlayer.DataAccess.Interfaces.Musics;
 
 public interface IMusicRepository : IRepository<Music, Music>,
-    IGetAll<Music>, ISearchable<Music>
+    IGetAll<MusicViewModel>, ISearchable<MusicViewModel>
 {
 }
