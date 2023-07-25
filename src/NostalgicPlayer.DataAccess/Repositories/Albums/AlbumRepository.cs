@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using NostalgicPlayer.DataAccess.Interfaces.Albums;
 using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Albums;
 
 namespace NostalgicPlayer.DataAccess.Repositories.Albums;
@@ -65,19 +66,19 @@ public class AlbumRepository : BaseRepository, IAlbumRepository
         }
     }
 
-    public async Task<IList<Album>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<AlbumViewModel>> GetAllAsync(PaginationParams @params)
     {
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM albums ORDER BY id DESC " +
+            string query = $"SELECT * FROM albums_view ORDER BY id DESC " +
                 $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize}";
-            var result = (await _connection.QueryAsync<Album>(query)).ToList();
+            var result = (await _connection.QueryAsync<AlbumViewModel>(query)).ToList();
             return result;
         }
         catch
         {
-            return new List<Album>();
+            return new List<AlbumViewModel>();
         }
         finally
         {
@@ -104,9 +105,24 @@ public class AlbumRepository : BaseRepository, IAlbumRepository
         }
     }
 
-    public Task<(int ItemsCount, IList<Album>)> SearchAsync(string search, PaginationParams @params)
+    public async Task<(int ItemsCount, IList<AlbumViewModel>)> SearchAsync(string search, PaginationParams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM albums_view WHERE music_name ILIKE @search ORDER BY id DESC " +
+                $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize}";
+            var result = (await _connection.QueryAsync<AlbumViewModel>(query, new { search = "%" + search + "%" })).ToList();
+            return (result.Count, result);
+        }
+        catch
+        {
+            return (0, new List<AlbumViewModel>());
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<int> UpdateAsync(long id, Album entity)

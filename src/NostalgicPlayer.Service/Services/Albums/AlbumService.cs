@@ -1,5 +1,6 @@
 ﻿using NostalgicPlayer.DataAccess.Interfaces.Albums;
 using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Albums;
 using NostalgicPlayer.Domain.Exceptions.Albums;
 using NostalgicPlayer.Domain.Exceptions.Files;
@@ -57,7 +58,7 @@ public class AlbumService : IAlbumService
         return dbResult > 0;
     }
 
-    public async Task<IList<Album>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<AlbumViewModel>> GetAllAsync(PaginationParams @params)
     {
         var albums = await _albumRepository.GetAllAsync(@params);
         long count = await _albumRepository.CountAsync();
@@ -70,6 +71,14 @@ public class AlbumService : IAlbumService
         var album = await _albumRepository.GetByIdAsync(albumId);
         if (album is null) throw new AlbumNotFoundException();
         else return album;
+    }
+
+    public async Task<IList<AlbumViewModel>> SearchAsync(string search, PaginationParams @params)
+    {
+        var albums = await _albumRepository.SearchAsync(search, @params);
+        long count = await _albumRepository.CountAsync();
+        _paginator.Paginate(count, @params);
+        return albums.Item2.ToList();
     }
 
     public async Task<bool> UpdateAsync(long albumId, AlbumUpdateDto dto)

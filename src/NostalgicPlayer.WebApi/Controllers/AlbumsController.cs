@@ -34,6 +34,11 @@ public class AlbumsController : ControllerBase
     public async Task<IActionResult> GetByIdAsync(long albumId)
         => Ok(await _albumService.GetByIdAsync(albumId));
 
+    [HttpGet("search")]
+    [AllowAnonymous]
+    public async Task<IActionResult> SearchAsync(string search, [FromQuery] int page = 1)
+        => Ok(await _albumService.SearchAsync(search, new PaginationParams(page, maxPageSize)));
+
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] AlbumCreateDto dto)
