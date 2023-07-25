@@ -28,6 +28,7 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IAlbumService, AlbumService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+        builder.Services.AddScoped<IPlayService, PlayService>();
         builder.Services.AddScoped<IPaginator, Paginator>();
         builder.Services.AddSingleton<ISmsSender, SmsSender>();
     }
