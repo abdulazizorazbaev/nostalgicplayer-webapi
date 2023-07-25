@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.Service.DTOs.Musics;
 using NostalgicPlayer.Service.Interfaces.Musics;
 using NostalgicPlayer.Service.Validators.DTOs.Musics;
@@ -17,6 +18,11 @@ public class FavoritesController : ControllerBase
     {
         this._favoriteService = favoriteService;
     }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
+        => Ok(await _favoriteService.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("count")]
     [AllowAnonymous]

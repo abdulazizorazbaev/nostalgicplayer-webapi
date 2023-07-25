@@ -1,5 +1,6 @@
 ﻿using NostalgicPlayer.DataAccess.Interfaces.Musics;
 using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Musics.Favorites;
 using NostalgicPlayer.Domain.Exceptions.Musics;
 using NostalgicPlayer.Service.Common.Helpers;
@@ -13,12 +14,15 @@ public class FavoriteService : IFavoriteService
 {
     private readonly IFavoriteRepository _favoriteRepository;
     private readonly IFileService _fileService;
+    private readonly IPaginator _paginator;
 
     public FavoriteService(IFavoriteRepository favoriteRepository,
-        IFileService fileService)
+        IFileService fileService,
+        IPaginator paginator)
     {
         this._favoriteRepository = favoriteRepository;
         this._fileService = fileService;
+        this._paginator = paginator;
     }
     public async Task<long> CountAsync() => await _favoriteRepository.CountAsync();
 
@@ -43,9 +47,12 @@ public class FavoriteService : IFavoriteService
         return dbResult > 0;
     }
 
-    public Task<IList<Favorite>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<FavoriteViewModel>> GetAllAsync(PaginationParams @params)
     {
-        throw new NotImplementedException();
+        var favorites = await _favoriteRepository.GetAllAsync(@params);
+        var count = await _favoriteRepository.CountAsync();
+        _paginator.Paginate(count, @params);
+        return favorites;
     }
 
     public async Task<Favorite> GetByIdAsync(long favoriteId)

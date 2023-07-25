@@ -14,11 +14,13 @@ public class SingerService : ISingerService
 {
     private readonly ISingerRepository _singerRepository;
     private readonly IFileService _fileService;
+    private readonly IPaginator _paginator;
 
-    public SingerService(ISingerRepository singerRepository, IFileService fileService)
+    public SingerService(ISingerRepository singerRepository, IFileService fileService, IPaginator paginator)
     {
-        _singerRepository = singerRepository;
-        _fileService = fileService;
+        this._singerRepository = singerRepository;
+        this._fileService = fileService;
+        this._paginator = paginator;
     }
 
     public async Task<long> CountAsync() => await _singerRepository.CountAsync();
@@ -58,6 +60,8 @@ public class SingerService : ISingerService
     public async Task<IList<Singer>> GetAllAsync(PaginationParams @params)
     {
         var singers = await _singerRepository.GetAllAsync(@params);
+        var count = await _singerRepository.CountAsync();
+        _paginator.Paginate(count, @params);
         return singers;
     }
 

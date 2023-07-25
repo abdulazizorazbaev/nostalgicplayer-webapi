@@ -14,11 +14,13 @@ public class MusicService : IMusicService
 {
     private readonly IMusicRepository _musicRepository;
     private readonly IFileService _fileService;
+    private readonly IPaginator _paginator;
 
-    public MusicService(IMusicRepository musicRepository, IFileService fileService)
+    public MusicService(IMusicRepository musicRepository, IFileService fileService, IPaginator paginator)
     {
         this._musicRepository = musicRepository;
         this._fileService = fileService;
+        this._paginator = paginator;
     }
 
     public async Task<long> CountAsync() => await _musicRepository.CountAsync();
@@ -58,6 +60,8 @@ public class MusicService : IMusicService
     public async Task<IList<Music>> GetAllAsync(PaginationParams @params)
     {
         var musics = await _musicRepository.GetAllAsync(@params);
+        var count = await _musicRepository.CountAsync();
+        _paginator.Paginate(count, @params);
         return musics;
     }
 

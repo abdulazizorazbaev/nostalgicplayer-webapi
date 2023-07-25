@@ -1,4 +1,5 @@
 ﻿using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Musics.Favorites;
 using NostalgicPlayer.Service.DTOs.Musics;
 
@@ -8,7 +9,7 @@ public interface IFavoriteService
 {
     public Task<bool> CreateAsync(FavoriteCreateDto dto);
 
-    public Task<IList<Favorite>> GetAllAsync(PaginationParams @params);
+    public Task<IList<FavoriteViewModel>> GetAllAsync(PaginationParams @params);
 
     public Task<long> CountAsync();
 
