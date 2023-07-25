@@ -1,5 +1,6 @@
 using NostalgicPlayer.WebApi.Configurations;
 using NostalgicPlayer.WebApi.Configurations.Layers;
+using NostalgicPlayer.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +9,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
-
 builder.ConfigureJwtAuth();
 builder.ConfigureSwaggerAuth();
+builder.ConfigureCORSPolicy();
 builder.ConfigureDataAccess();
 builder.ConfigureServiceLayer();
 
@@ -23,7 +24,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseStaticFiles();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

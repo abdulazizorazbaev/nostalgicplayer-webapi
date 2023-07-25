@@ -2,9 +2,9 @@
 
 namespace NostalgicPlayer.Domain.Exceptions;
 
-public class TooManyRequestException : Exception
+public class TooManyRequestException : ClientException
 {
-    public HttpStatusCode StatusCode { get; } = HttpStatusCode.TooManyRequests;
+    public override HttpStatusCode StatusCode { get; } = HttpStatusCode.TooManyRequests;
 
-    public string TitleMessage { get; protected set; } = String.Empty;
+    public override string TitleMessage { get; protected set; } = String.Empty;
 }
