@@ -3,13 +3,13 @@ using NostalgicPlayer.Domain.Enums;
 
 namespace NostalgicPlayer.Service.DTOs.Users;
 
-public class UserCreateDto
+public class UserUpdateDto
 {
     public string FirstName { get; set; } = String.Empty;
 
     public string LastName { get; set; } = String.Empty;
 
-    public IFormFile ImagePath { get; set; } = default!;
+    public IFormFile? ImagePath { get; set; }
 
     public string PhoneNumber { get; set; } = String.Empty;
 

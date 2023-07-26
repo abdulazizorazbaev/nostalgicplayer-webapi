@@ -5,6 +5,7 @@ using NostalgicPlayer.Service.Interfaces.Genres;
 using NostalgicPlayer.Service.Interfaces.Musics;
 using NostalgicPlayer.Service.Interfaces.Notifications;
 using NostalgicPlayer.Service.Interfaces.Singers;
+using NostalgicPlayer.Service.Interfaces.Users;
 using NostalgicPlayer.Service.Services.Albums;
 using NostalgicPlayer.Service.Services.Auth;
 using NostalgicPlayer.Service.Services.Common;
@@ -12,6 +13,7 @@ using NostalgicPlayer.Service.Services.Genres;
 using NostalgicPlayer.Service.Services.Musics;
 using NostalgicPlayer.Service.Services.Notifications;
 using NostalgicPlayer.Service.Services.Singers;
+using NostalgicPlayer.Service.Services.Users;
 
 namespace NostalgicPlayer.WebApi.Configurations.Layers;
 
@@ -31,5 +33,6 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<IPlayService, PlayService>();
         builder.Services.AddScoped<IPaginator, Paginator>();
         builder.Services.AddSingleton<ISmsSender, SmsSender>();
+        builder.Services.AddScoped<IUserService, UserService>();    
     }
 }

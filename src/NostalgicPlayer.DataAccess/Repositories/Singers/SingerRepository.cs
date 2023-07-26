@@ -104,11 +104,6 @@ public class SingerRepository : BaseRepository, ISingerRepository
         }
     }
 
-    public Task<(int ItemsCount, IList<Singer>)> SearchAsync(string search, PaginationParams @params)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<int> UpdateAsync(long id, Singer entity)
     {
         try
