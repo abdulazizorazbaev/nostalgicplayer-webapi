@@ -23,5 +23,6 @@ public static class DataAccessConfiguration
         builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
         builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
         builder.Services.AddScoped<IPlayRepository, PlayRepository>();
+        builder.Services.AddScoped < IDownloadRepository, DownloadRepository>();
     } 
 }

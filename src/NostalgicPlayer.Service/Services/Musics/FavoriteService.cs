@@ -13,7 +13,6 @@ namespace NostalgicPlayer.Service.Services.Musics;
 public class FavoriteService : IFavoriteService
 {
     private readonly IFavoriteRepository _favoriteRepository;
-    private readonly IFileService _fileService;
     private readonly IPaginator _paginator;
 
     public FavoriteService(IFavoriteRepository favoriteRepository,
@@ -21,7 +20,6 @@ public class FavoriteService : IFavoriteService
         IPaginator paginator)
     {
         this._favoriteRepository = favoriteRepository;
-        this._fileService = fileService;
         this._paginator = paginator;
     }
     public async Task<long> CountAsync() => await _favoriteRepository.CountAsync();
