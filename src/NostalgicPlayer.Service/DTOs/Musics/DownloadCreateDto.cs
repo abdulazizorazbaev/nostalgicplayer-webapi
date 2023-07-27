@@ -4,5 +4,5 @@ public class DownloadCreateDto
 {
     public long MusicId { get; set; }
 
-    public long UserId { get; set; }
+    //public long UserId { get; set; }
 }

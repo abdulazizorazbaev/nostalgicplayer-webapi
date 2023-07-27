@@ -22,6 +22,7 @@ public class SmsController : ControllerBase
     public async Task<IActionResult> SendAsync([FromBody] SmsMessage smsMessage)
         => Ok(await _smsSender.SendAsync(smsMessage));
 
+    #pragma warning disable
     [HttpGet]
     public async Task<IActionResult> GetAsync()
         => Ok(new { _identity.UserId, 

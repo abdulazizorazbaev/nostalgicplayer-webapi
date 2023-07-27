@@ -7,6 +7,7 @@ using NostalgicPlayer.Domain.Entities.Musics.Favorites;
 using NostalgicPlayer.Domain.Exceptions.Musics;
 using NostalgicPlayer.Service.Common.Helpers;
 using NostalgicPlayer.Service.DTOs.Musics;
+using NostalgicPlayer.Service.Interfaces.Auth;
 using NostalgicPlayer.Service.Interfaces.Common;
 using NostalgicPlayer.Service.Interfaces.Musics;
 
@@ -16,12 +17,14 @@ public class DownloadService : IDownloadService
 {
     private readonly IDownloadRepository _downloadRepository;
     private readonly IPaginator _paginator;
+    private readonly IIdentityService _identity;
 
     public DownloadService(IDownloadRepository downloadRepository,
-        IPaginator paginator)
+        IPaginator paginator, IIdentityService identityService)
     {
         this._downloadRepository = downloadRepository;
         this._paginator = paginator;
+        this._identity = identityService;
     }
     public async Task<long> CountAsync() => await _downloadRepository.CountAsync();
 
@@ -30,7 +33,7 @@ public class DownloadService : IDownloadService
         Download download = new Download()
         {
             MusicId = dto.MusicId,
-            UserId = dto.UserId,
+            UserId = _identity.UserId,
             CreatedAt = TimeHelper.GetDateTime()
         };
         var result = await _downloadRepository.CreateAsync(download);
