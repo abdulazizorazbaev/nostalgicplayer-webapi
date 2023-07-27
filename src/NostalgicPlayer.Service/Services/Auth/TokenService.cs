@@ -17,6 +17,8 @@ public class TokenService : ITokenService
     {
         _configuration = _config.GetSection("Jwt");
     }
+
+    #pragma warning disable
     public async Task<string> GenerateToken(User user)
     {
         var identityClaims = new Claim[]
