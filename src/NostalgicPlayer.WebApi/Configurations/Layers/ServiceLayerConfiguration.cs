@@ -35,5 +35,6 @@ public static class ServiceLayerConfiguration
         builder.Services.AddSingleton<ISmsSender, SmsSender>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IDownloadService, DownloadService>();
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
     }
 }
