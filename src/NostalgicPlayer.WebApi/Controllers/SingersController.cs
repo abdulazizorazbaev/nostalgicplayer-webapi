@@ -34,6 +34,11 @@ public class SingersController : ControllerBase
     public async Task<IActionResult> GetByIdAsync(long singerId)
         => Ok(await _service.GetByIdAsync(singerId));
 
+    [HttpGet("{singerId}/musics")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetMusicsBySingerIdAsync(long singerId, [FromQuery] int page = 1)
+        => Ok(await _service.GetMusicsBySingerIdAsync(singerId, new PaginationParams(page, maxPageSize)));
+
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] SingerCreateDto dto)

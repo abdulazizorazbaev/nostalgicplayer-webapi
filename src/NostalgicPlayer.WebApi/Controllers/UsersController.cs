@@ -18,17 +18,17 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _userService.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("count")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CountAsync()
         => Ok(await _userService.CountAsync());
 
     [HttpGet("{userId}")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetByIdAsync(long userId)
         => Ok(await _userService.GetByIdAsync(userId));
 

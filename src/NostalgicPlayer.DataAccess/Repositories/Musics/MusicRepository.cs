@@ -105,6 +105,26 @@ public class MusicRepository : BaseRepository, IMusicRepository
         }
     }
 
+    public async Task<IList<Music>> GetMusicsBySingerIdAsync(long singerId, PaginationParams @params)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM musics WHERE singer_id=@SingerId ORDER BY id DESC " +
+                $"OFFSET {@params.GetSkipCount()} LIMIT {@params.PageSize}";
+            var result = (await _connection.QueryAsync<Music>(query, new { singerId = singerId})).ToList();
+            return result;
+        }
+        catch
+        {
+            return new List<Music>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
     public async Task<(int ItemsCount, IList<MusicViewModel>)> SearchAsync(string search, PaginationParams @params)
     {
         try

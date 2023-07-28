@@ -1,5 +1,8 @@
-﻿using NostalgicPlayer.DataAccess.Interfaces.Singers;
+﻿using NostalgicPlayer.DataAccess.Interfaces.Musics;
+using NostalgicPlayer.DataAccess.Interfaces.Singers;
 using NostalgicPlayer.DataAccess.Utilities;
+using NostalgicPlayer.DataAccess.ViewModels;
+using NostalgicPlayer.Domain.Entities.Musics;
 using NostalgicPlayer.Domain.Entities.Singers;
 using NostalgicPlayer.Domain.Exceptions.Files;
 using NostalgicPlayer.Domain.Exceptions.Singers;
@@ -15,12 +18,14 @@ public class SingerService : ISingerService
     private readonly ISingerRepository _singerRepository;
     private readonly IFileService _fileService;
     private readonly IPaginator _paginator;
+    private readonly IMusicRepository _musicRepository;
 
-    public SingerService(ISingerRepository singerRepository, IFileService fileService, IPaginator paginator)
+    public SingerService(ISingerRepository singerRepository, IFileService fileService, IPaginator paginator, IMusicRepository musicRepository)
     {
         this._singerRepository = singerRepository;
         this._fileService = fileService;
         this._paginator = paginator;
+        this._musicRepository = musicRepository;
     }
 
     public async Task<long> CountAsync() => await _singerRepository.CountAsync();
@@ -70,6 +75,14 @@ public class SingerService : ISingerService
         var singer = await _singerRepository.GetByIdAsync(singerId);
         if (singer is null) throw new SingerNotFoundException();
         else return singer;
+    }
+
+    public async Task<IList<Music>> GetMusicsBySingerIdAsync(long singerId, PaginationParams @params)
+    {
+        var musics = await _musicRepository.GetMusicsBySingerIdAsync(singerId, @params);
+        var count = await _musicRepository.CountAsync();
+        _paginator.Paginate(count, @params);
+        return musics;
     }
 
     public async Task<bool> UpdateAsync(long singerId, SingerUpdateDto dto)
