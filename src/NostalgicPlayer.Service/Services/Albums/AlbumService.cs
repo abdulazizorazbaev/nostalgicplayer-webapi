@@ -1,9 +1,13 @@
 ﻿using NostalgicPlayer.DataAccess.Interfaces.Albums;
+using NostalgicPlayer.DataAccess.Interfaces.Musics;
+using NostalgicPlayer.DataAccess.Interfaces.Singers;
 using NostalgicPlayer.DataAccess.Utilities;
 using NostalgicPlayer.DataAccess.ViewModels;
 using NostalgicPlayer.Domain.Entities.Albums;
 using NostalgicPlayer.Domain.Exceptions.Albums;
 using NostalgicPlayer.Domain.Exceptions.Files;
+using NostalgicPlayer.Domain.Exceptions.Musics;
+using NostalgicPlayer.Domain.Exceptions.Singers;
 using NostalgicPlayer.Service.Common.Helpers;
 using NostalgicPlayer.Service.DTOs.Albums;
 using NostalgicPlayer.Service.Interfaces.Albums;
@@ -16,20 +20,30 @@ public class AlbumService : IAlbumService
     private readonly IAlbumRepository _albumRepository;
     private readonly IFileService _fileService;
     private readonly IPaginator _paginator;
+    private readonly IMusicRepository _musicRepository;
+    private readonly ISingerRepository _singerRepository;
 
     public AlbumService(IAlbumRepository albumRepository,
         IFileService fileService,
-        IPaginator paginator)
+        IPaginator paginator,
+        IMusicRepository musicRepository,
+        ISingerRepository singerRepository)
     {
         this._albumRepository = albumRepository;
         this._fileService = fileService;
         this._paginator = paginator;
+        this._musicRepository = musicRepository;
+        this._singerRepository = singerRepository;
     }
 
     public async Task<long> CountAsync() => await _albumRepository.CountAsync();
 
     public async Task<bool> CreateAsync(AlbumCreateDto dto)
     {
+        var music = await _musicRepository.GetByIdAsync(dto.MusicId);
+        if (music == null) throw new MusicNotFoundException();
+        var singer = await _singerRepository.GetByIdAsync(dto.SingerId);
+        if (singer == null) throw new SingerNotFoundException();
         string imagePath = await _fileService.UploadImageAsync(dto.ImagePath);
         Album album = new Album()
         {
