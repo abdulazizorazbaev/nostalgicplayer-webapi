@@ -18,26 +18,34 @@ public class DownloadService : IDownloadService
     private readonly IDownloadRepository _downloadRepository;
     private readonly IPaginator _paginator;
     private readonly IIdentityService _identity;
+    private readonly IMusicRepository _musicRepository;
 
     public DownloadService(IDownloadRepository downloadRepository,
-        IPaginator paginator, IIdentityService identityService)
+        IPaginator paginator, IIdentityService identityService,
+        IMusicRepository musicRepository)
     {
         this._downloadRepository = downloadRepository;
         this._paginator = paginator;
         this._identity = identityService;
+        this._musicRepository = musicRepository;
     }
     public async Task<long> CountAsync() => await _downloadRepository.CountAsync();
 
     public async Task<bool> CreateAsync(DownloadCreateDto dto)
     {
-        Download download = new Download()
+        var music = await _musicRepository.GetByIdAsync(dto.MusicId);
+        if (music == null) throw new MusicNotFoundException();
+        else
         {
-            MusicId = dto.MusicId,
-            UserId = _identity.UserId,
-            CreatedAt = TimeHelper.GetDateTime()
-        };
-        var result = await _downloadRepository.CreateAsync(download);
-        return result > 0;
+            Download download = new Download()
+            {
+                MusicId = dto.MusicId,
+                UserId = _identity.UserId,
+                CreatedAt = TimeHelper.GetDateTime()
+            };
+            var result = await _downloadRepository.CreateAsync(download);
+            return result > 0;
+        }
     }
 
     public async Task<bool> DeleteAsync(long downloadId)

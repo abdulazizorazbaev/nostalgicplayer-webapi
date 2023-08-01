@@ -14,26 +14,34 @@ public class FavoriteService : IFavoriteService
 {
     private readonly IFavoriteRepository _favoriteRepository;
     private readonly IPaginator _paginator;
+    private readonly IMusicRepository _musicRepository;
 
     public FavoriteService(IFavoriteRepository favoriteRepository,
         IFileService fileService,
-        IPaginator paginator)
+        IPaginator paginator,
+        IMusicRepository musicRepository)
     {
         this._favoriteRepository = favoriteRepository;
         this._paginator = paginator;
+        this._musicRepository = musicRepository;
     }
     public async Task<long> CountAsync() => await _favoriteRepository.CountAsync();
 
     public async Task<bool> CreateAsync(FavoriteCreateDto dto)
     {
-        Favorite favorite = new Favorite()
+        var music = await _musicRepository.GetByIdAsync(dto.MusicId);
+        if (music == null) throw new MusicNotFoundException();
+        else
         {
-            MusicId = dto.MusicId,
-            Description = dto.Description,
-            CreatedAt = TimeHelper.GetDateTime()
-        };
-        var result = await _favoriteRepository.CreateAsync(favorite);
-        return result > 0;
+            Favorite favorite = new Favorite()
+            {
+                MusicId = dto.MusicId,
+                Description = dto.Description,
+                CreatedAt = TimeHelper.GetDateTime()
+            };
+            var result = await _favoriteRepository.CreateAsync(favorite);
+            return result > 0;
+        }
     }
 
     public async Task<bool> DeleteAsync(long favoriteId)
